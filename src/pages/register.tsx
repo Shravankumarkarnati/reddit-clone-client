@@ -6,6 +6,7 @@ import Wrapper from "../components/wrapper";
 import { MeDocument, MeQuery, useRegisterMutation } from "../generated/graphql";
 import { useRouter } from "next/router";
 import toErrorMap from "../utils/toErrorMap";
+import withApollo from "../utils/withApolloClient";
 
 interface registerProps {}
 
@@ -70,4 +71,4 @@ const Register: React.FC<registerProps> = ({}) => {
     </Wrapper>
   );
 };
-export default Register;
+export default withApollo({ ssr: false })(Register);

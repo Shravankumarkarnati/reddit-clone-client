@@ -7,6 +7,7 @@ import {
   useLogoutUserMutation,
   useMeQuery,
 } from "../generated/graphql";
+import { isServer } from "../utils/isServer";
 
 interface navBarProps {}
 
@@ -22,9 +23,10 @@ const NavContainer: React.FC = ({ children }) => (
 );
 
 const NavBar: React.FC<navBarProps> = ({}) => {
-  const { data, loading } = useMeQuery();
+  const { data, loading } = useMeQuery({
+    skip: isServer(),
+  });
   const [logoutMutation, { loading: logoutLoading }] = useLogoutUserMutation();
-
   return (
     <Box bg="tomato" px={3} py={4} color="white">
       <Flex align="center" justify="flex-end">

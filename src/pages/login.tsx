@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/core";
-import { Formik, Form } from "formik";
+import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
 import InputField from "../components/inputField";
@@ -10,6 +10,7 @@ import {
   useLoginUserMutation,
 } from "../generated/graphql";
 import toErrorMap from "../utils/toErrorMap";
+import withApollo from "../utils/withApolloClient";
 
 interface LoginProps {}
 
@@ -74,4 +75,4 @@ const Login: React.FC<LoginProps> = ({}) => {
     </Wrapper>
   );
 };
-export default Login;
+export default withApollo({ ssr: true })(Login);
