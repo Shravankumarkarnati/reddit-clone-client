@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import InputField from "../components/inputField";
 import Wrapper from "../components/wrapper";
-import { useRegisterMutation } from "../generated/graphql";
+import { MeDocument, MeQuery, useRegisterMutation } from "../generated/graphql";
 import { useRouter } from "next/router";
 import toErrorMap from "../utils/toErrorMap";
 
@@ -18,7 +18,24 @@ const Register: React.FC<registerProps> = ({}) => {
         initialValues={{ username: "", password: "" }}
         onSubmit={async (values, actions) => {
           const { setErrors } = actions;
-          const response = await registerMutation({ variables: values });
+          const response = await registerMutation({
+            variables: values,
+            update: (cache, { data }) => {
+              if (data?.registerUser.error) {
+                return;
+              } else if (data?.registerUser.user) {
+                cache.writeQuery<MeQuery>({
+                  query: MeDocument,
+                  data: {
+                    me: {
+                      id: data.registerUser.user.id,
+                      username: data.registerUser.user.username,
+                    },
+                  },
+                });
+              }
+            },
+          });
           if (response.data?.registerUser.error) {
             setErrors(toErrorMap(response.data.registerUser.error));
           } else {
