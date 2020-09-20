@@ -7,6 +7,8 @@ import { MeDocument, MeQuery, useRegisterMutation } from "../generated/graphql";
 import { useRouter } from "next/router";
 import toErrorMap from "../utils/toErrorMap";
 import withApollo from "../utils/withApolloClient";
+import { validationErrorMessages } from "../utils/validationErrorCodes";
+import { checker } from "../utils/validationChecker";
 
 interface registerProps {}
 
@@ -16,9 +18,25 @@ const Register: React.FC<registerProps> = ({}) => {
   return (
     <Wrapper>
       <Formik
-        initialValues={{ username: "", password: "" }}
+        initialValues={{ username: "", password: "", email: "" }}
         onSubmit={async (values, actions) => {
           const { setErrors } = actions;
+          const usernameChecker = checker({
+            type: "username",
+            value: values.username,
+          });
+          if (usernameChecker !== 0) {
+            setErrors({ username: validationErrorMessages[usernameChecker] });
+            return;
+          }
+          const passwordChecker = checker({
+            type: "password",
+            value: values.password,
+          });
+          if (passwordChecker !== 0) {
+            setErrors({ username: validationErrorMessages[passwordChecker] });
+            return;
+          }
           const response = await registerMutation({
             variables: values,
             update: (cache, { data }) => {
@@ -31,6 +49,7 @@ const Register: React.FC<registerProps> = ({}) => {
                     me: {
                       id: data.registerUser.user.id,
                       username: data.registerUser.user.username,
+                      email: data.registerUser.user.email,
                     },
                   },
                 });
@@ -46,6 +65,12 @@ const Register: React.FC<registerProps> = ({}) => {
       >
         {({ isSubmitting }) => (
           <Form>
+            <InputField
+              name="email"
+              placeholder="Email"
+              label="Email"
+              type="email"
+            />
             <InputField
               name="username"
               placeholder="Username"

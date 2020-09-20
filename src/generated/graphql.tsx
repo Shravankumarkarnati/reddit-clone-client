@@ -30,6 +30,7 @@ export type User = {
   created_at: Scalars['String'];
   updated_at: Scalars['String'];
   username: Scalars['String'];
+  email: Scalars['String'];
 };
 
 export type Post = {
@@ -52,12 +53,12 @@ export type Mutation = {
 
 
 export type MutationRegisterUserArgs = {
-  details: UsernamePasswordType;
+  details: DetailsType;
 };
 
 
 export type MutationLoginUserArgs = {
-  details: UsernamePasswordType;
+  details: LoginUserType;
 };
 
 
@@ -85,17 +86,23 @@ export type UserResponse = {
 export type SignError = {
   __typename?: 'SignError';
   property: Scalars['String'];
-  message: Scalars['String'];
+  errorCode: Scalars['Float'];
 };
 
-export type UsernamePasswordType = {
+export type DetailsType = {
+  username: Scalars['String'];
+  password: Scalars['String'];
+  email: Scalars['String'];
+};
+
+export type LoginUserType = {
   username: Scalars['String'];
   password: Scalars['String'];
 };
 
 export type MeUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'username'>
+  & Pick<User, 'id' | 'username' | 'email'>
 );
 
 export type LoginUserMutationVariables = Exact<{
@@ -110,7 +117,7 @@ export type LoginUserMutation = (
     { __typename?: 'UserResponse' }
     & { error?: Maybe<Array<(
       { __typename?: 'SignError' }
-      & Pick<SignError, 'property' | 'message'>
+      & Pick<SignError, 'property' | 'errorCode'>
     )>>, user?: Maybe<(
       { __typename?: 'User' }
       & MeUserFragment
@@ -129,6 +136,7 @@ export type LogoutUserMutation = (
 export type RegisterMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
+  email: Scalars['String'];
 }>;
 
 
@@ -138,7 +146,7 @@ export type RegisterMutation = (
     { __typename?: 'UserResponse' }
     & { error?: Maybe<Array<(
       { __typename?: 'SignError' }
-      & Pick<SignError, 'property' | 'message'>
+      & Pick<SignError, 'property' | 'errorCode'>
     )>>, user?: Maybe<(
       { __typename?: 'User' }
       & MeUserFragment
@@ -172,6 +180,7 @@ export const MeUserFragmentDoc = gql`
     fragment MeUser on User {
   id
   username
+  email
 }
     `;
 export const LoginUserDocument = gql`
@@ -179,7 +188,7 @@ export const LoginUserDocument = gql`
   loginUser(details: {username: $username, password: $password}) {
     error {
       property
-      message
+      errorCode
     }
     user {
       ...MeUser
@@ -243,11 +252,11 @@ export type LogoutUserMutationHookResult = ReturnType<typeof useLogoutUserMutati
 export type LogoutUserMutationResult = Apollo.MutationResult<LogoutUserMutation>;
 export type LogoutUserMutationOptions = Apollo.BaseMutationOptions<LogoutUserMutation, LogoutUserMutationVariables>;
 export const RegisterDocument = gql`
-    mutation Register($username: String!, $password: String!) {
-  registerUser(details: {username: $username, password: $password}) {
+    mutation Register($username: String!, $password: String!, $email: String!) {
+  registerUser(details: {username: $username, password: $password, email: $email}) {
     error {
       property
-      message
+      errorCode
     }
     user {
       ...MeUser
@@ -272,6 +281,7 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  *   variables: {
  *      username: // value for 'username'
  *      password: // value for 'password'
+ *      email: // value for 'email'
  *   },
  * });
  */

@@ -2,7 +2,7 @@ mutation LoginUser($username: String!, $password: String!) {
   loginUser(details: { username: $username, password: $password }) {
     error {
       property
-      message
+      errorCode
     }
     user {
       ...MeUser

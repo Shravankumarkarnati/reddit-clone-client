@@ -35,6 +35,7 @@ const Login: React.FC<LoginProps> = ({}) => {
                     me: {
                       id: data.loginUser.user.id,
                       username: data.loginUser.user.username,
+                      email: data.loginUser.user.email,
                     },
                   },
                 });
