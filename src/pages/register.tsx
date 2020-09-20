@@ -34,7 +34,7 @@ const Register: React.FC<registerProps> = ({}) => {
             value: values.password,
           });
           if (passwordChecker !== 0) {
-            setErrors({ username: validationErrorMessages[passwordChecker] });
+            setErrors({ password: validationErrorMessages[passwordChecker] });
             return;
           }
           const response = await registerMutation({

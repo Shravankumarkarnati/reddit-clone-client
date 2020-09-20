@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/core";
+import { Button, Flex } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
@@ -11,6 +11,7 @@ import {
 } from "../generated/graphql";
 import toErrorMap from "../utils/toErrorMap";
 import withApollo from "../utils/withApolloClient";
+import NextLink from "next/link";
 
 interface LoginProps {}
 
@@ -62,14 +63,17 @@ const Login: React.FC<LoginProps> = ({}) => {
               label="Password"
               type="password"
             />
-            <Button
-              mt={4}
-              variantColor="teal"
-              isLoading={isSubmitting}
-              type="submit"
-            >
-              Login
-            </Button>
+            <Flex alignItems="flex-end" justify="space-between">
+              <Button
+                mt={4}
+                variantColor="teal"
+                isLoading={isSubmitting}
+                type="submit"
+              >
+                Login
+              </Button>
+              <NextLink href="/forgotPassword">Forgot password</NextLink>
+            </Flex>
           </Form>
         )}
       </Formik>
