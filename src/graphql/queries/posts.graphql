@@ -4,5 +4,8 @@ query Posts {
     title
     created_at
     updated_at
+    postOwnerId
+    post
+    points
   }
 }

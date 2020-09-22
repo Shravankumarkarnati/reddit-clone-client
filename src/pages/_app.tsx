@@ -1,4 +1,5 @@
 import { ThemeProvider, CSSReset, ColorModeProvider } from "@chakra-ui/core";
+import "../main.css";
 
 import theme from "../theme";
 

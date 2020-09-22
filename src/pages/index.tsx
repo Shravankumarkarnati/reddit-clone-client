@@ -1,19 +1,16 @@
-import { Box, Text } from "@chakra-ui/core";
-import NavBar from "../components/navBar";
+import { Text } from "@chakra-ui/core";
+import Layout from "../components/layout";
+import PostsContainer from "../components/postsContainer";
 import { usePostsQuery } from "../generated/graphql";
 import withApollo from "../utils/withApolloClient";
 
 const Index = () => {
   const { data } = usePostsQuery();
+
   return (
-    <Box>
-      <NavBar />
-      {!data ? (
-        <Text>Loading...</Text>
-      ) : (
-        data.posts.map((cur) => <Text key={cur.id}>{cur.title}</Text>)
-      )}
-    </Box>
+    <Layout>
+      {!data ? <Text>Loading...</Text> : <PostsContainer data={data} />}
+    </Layout>
   );
 };
 

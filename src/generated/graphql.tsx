@@ -27,16 +27,20 @@ export type QueryPostArgs = {
 export type User = {
   __typename?: 'User';
   id: Scalars['Int'];
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
   username: Scalars['String'];
   email: Scalars['String'];
+  posts: Scalars['String'];
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
 };
 
 export type Post = {
   __typename?: 'Post';
   id: Scalars['Int'];
   title: Scalars['String'];
+  post: Scalars['String'];
+  postOwnerId: Scalars['Float'];
+  points: Scalars['Float'];
   created_at: Scalars['String'];
   updated_at: Scalars['String'];
 };
@@ -78,7 +82,7 @@ export type MutationResetPasswordArgs = {
 
 
 export type MutationCreatePostArgs = {
-  title: Scalars['String'];
+  postInput: PostInputType;
 };
 
 
@@ -113,6 +117,11 @@ export type DetailsType = {
 export type LoginUserType = {
   username: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type PostInputType = {
+  title: Scalars['String'];
+  post: Scalars['String'];
 };
 
 export type MeUserFragment = (
@@ -219,7 +228,7 @@ export type PostsQuery = (
   { __typename?: 'Query' }
   & { posts: Array<(
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'title' | 'created_at' | 'updated_at'>
+    & Pick<Post, 'id' | 'title' | 'created_at' | 'updated_at' | 'postOwnerId' | 'post' | 'points'>
   )> }
 );
 
@@ -450,6 +459,9 @@ export const PostsDocument = gql`
     title
     created_at
     updated_at
+    postOwnerId
+    post
+    points
   }
 }
     `;
