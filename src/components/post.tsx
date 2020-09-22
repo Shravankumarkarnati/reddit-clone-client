@@ -1,4 +1,13 @@
-import { Avatar, Flex, PseudoBox, Text } from "@chakra-ui/core";
+import {
+  Avatar,
+  Flex,
+  Grid,
+  IconButton,
+  PseudoBox,
+  Stack,
+  Tag,
+  Text,
+} from "@chakra-ui/core";
 import React from "react";
 import { Post } from "../generated/graphql";
 
@@ -15,23 +24,58 @@ const SinglePost: React.FC<postProps> = ({ post }) => {
       height="100%"
       marginY="10px"
       padding="10px"
-      border="2px"
-      borderRadius=".5rem"
+      paddingBottom="20px"
+      borderBottom="2px solid gray"
     >
-      <Flex alignItems="center" justifyContent="flex-start" marginBottom="5px">
-        <Avatar
-          name={`${post.postOwnerId}`}
-          size="xs"
-          marginRight="10px"
-          backgroundColor="red.400"
-        />
-        <Text fontWeight="bold" fontSize="16px">
-          {post.title}
-        </Text>
-      </Flex>
-      <Text>{post.post}</Text>
-      <Text>{post.points}</Text>
-      <Text>{post.created_at}</Text>
+      <Grid templateColumns="1fr 10fr" gap={4}>
+        <PseudoBox height="100%">
+          <Stack
+            isInline
+            direction="column"
+            height="100%"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <IconButton
+              aria-label="Search database"
+              icon="add"
+              size="sm"
+              shadow="0px 1px 1px black"
+              _hover={{ bg: "red.400" }}
+              borderRadius="50%"
+            />
+            <Avatar
+              name={`${post.points}`}
+              size="sm"
+              bg="transparent"
+              color="black"
+            />
+            <IconButton
+              aria-label="Search database"
+              icon="minus"
+              size="sm"
+              shadow="0px 1px 1px black"
+              marginRight=".5rem"
+              _hover={{ bg: "red.400" }}
+              borderRadius="50%"
+            />
+          </Stack>
+        </PseudoBox>
+        <PseudoBox>
+          <Flex
+            alignItems="center"
+            justifyContent="flex-start"
+            marginBottom="5px"
+          >
+            <Tag fontWeight="bold" fontSize="10px">
+              {post.title}
+            </Tag>
+          </Flex>
+          <Text>{post.post}</Text>
+          <Text>{post.points}</Text>
+          <Text>{post.created_at}</Text>
+        </PseudoBox>
+      </Grid>
     </PseudoBox>
   );
 };
