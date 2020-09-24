@@ -10,6 +10,27 @@ import {
 } from "../generated/graphql";
 import { isServer } from "../utils/isServer";
 
+const CommonLink = (text: string) => (
+  <Link
+    _hover={{
+      textDecoration: "none",
+      color: "white",
+      borderColor: "white",
+      boxShadow: "0px 1px 10px white",
+    }}
+    textTransform="uppercase"
+    fontWeight="bold"
+    marginRight="2rem"
+    color={theme.colors.gray[300]}
+    padding=".5rem"
+    border="2px"
+    borderRadius=".5rem"
+    borderColor="black"
+  >
+    {text}
+  </Link>
+);
+
 const Logout = () => {
   const [logoutMutation] = useLogoutUserMutation();
 
@@ -33,24 +54,7 @@ const Logout = () => {
           });
         }}
       >
-        <Link
-          _hover={{
-            textDecoration: "none",
-            color: "white",
-            borderColor: "white",
-            boxShadow: "0px 1px 10px white",
-          }}
-          textTransform="uppercase"
-          fontWeight="bold"
-          marginRight="2rem"
-          color={theme.colors.gray[300]}
-          padding=".5rem"
-          border="2px"
-          borderRadius=".5rem"
-          borderColor="black"
-        >
-          Logout
-        </Link>
+        {CommonLink("LogOut")}
       </PseudoBox>
     </Flex>
   );
@@ -64,24 +68,7 @@ const LoginRegisterBtn = () => {
         if (router.pathname !== `/${cur}`) {
           return (
             <NextLink key={cur} href={`/${cur}`}>
-              <Link
-                _hover={{
-                  textDecoration: "none",
-                  color: "white",
-                  borderColor: "white",
-                  boxShadow: "0px 1px 10px white",
-                }}
-                textTransform="uppercase"
-                fontWeight="bold"
-                marginRight={cur === "login" ? "2rem" : "0"}
-                color={theme.colors.gray[300]}
-                padding=".5rem"
-                border="2px"
-                borderRadius=".5rem"
-                borderColor="black"
-              >
-                {cur}
-              </Link>
+              {CommonLink(cur)}
             </NextLink>
           );
         } else {
@@ -112,6 +99,7 @@ const NavBar: React.FC = ({}) => {
         >
           Coterie
         </PseudoBox>
+        <NextLink href="/createPost">{CommonLink("Create Post")}</NextLink>
         <Flex>{data?.me ? <Logout /> : <LoginRegisterBtn />}</Flex>
       </Flex>
     </Box>

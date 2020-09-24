@@ -1,11 +1,12 @@
-query Posts {
-  posts {
+query Posts($limit: Float!, $cursor: String) {
+  posts(limit: $limit, cursor: $cursor) {
     id
     title
     created_at
     updated_at
     postOwnerId
-    post
+    postSnippet
+    postOwnerUsername
     points
   }
 }

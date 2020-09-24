@@ -7,6 +7,7 @@ import {
   InputLeftElement,
   Icon,
   Tooltip,
+  Textarea,
 } from "@chakra-ui/core";
 import { useField } from "formik";
 import React, { useState } from "react";
@@ -17,12 +18,16 @@ type inputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   placeholder: string;
   iconName?: any;
   tooltip?: string;
+  textArea?: Boolean;
+  textAreaSize?: any;
 };
 
 const InputField: React.FC<inputFieldProps> = ({
   iconName,
   size: _,
   tooltip,
+  textArea,
+  textAreaSize,
   ...props
 }) => {
   const [field, { error }] = useField(props);
@@ -45,11 +50,8 @@ const InputField: React.FC<inputFieldProps> = ({
         >
           {props.label}
         </FormLabel>
-        <InputGroup>
-          <InputLeftElement
-            children={<Icon name={iconName} color="gray.300" />}
-          />
-          <Input
+        {textArea ? (
+          <Textarea
             {...field}
             {...props}
             id={props.name}
@@ -57,12 +59,32 @@ const InputField: React.FC<inputFieldProps> = ({
             borderRadius=".5rem"
             border="2px"
             fontFamily="inherit"
+            height={textAreaSize}
             onFocus={() => {
               if (tooltip) setToolStatus(true);
             }}
             onBlur={() => setToolStatus(false)}
           />
-        </InputGroup>
+        ) : (
+          <InputGroup>
+            <InputLeftElement
+              children={<Icon name={iconName} color="gray.300" />}
+            />
+            <Input
+              {...field}
+              {...props}
+              id={props.name}
+              placeholder={props.placeholder}
+              borderRadius=".5rem"
+              border="2px"
+              fontFamily="inherit"
+              onFocus={() => {
+                if (tooltip) setToolStatus(true);
+              }}
+              onBlur={() => setToolStatus(false)}
+            />
+          </InputGroup>
+        )}
         {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
       </FormControl>
     </Tooltip>

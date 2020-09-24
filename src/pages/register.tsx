@@ -97,6 +97,7 @@ const Register: React.FC = ({}) => {
                   1) Must be between 8-20 characters long
                   2) Cannot begin or end with '.' or '_'
                   3) Cannot have '__' or '..' or '._' or '_.' inside
+                  4) Lowercase letters Only.
                 "
                 />
                 <InputField
