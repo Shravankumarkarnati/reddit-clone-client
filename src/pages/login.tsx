@@ -1,4 +1,3 @@
-import { Button, Flex, Heading, Link, PseudoBox, Text } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
@@ -12,7 +11,7 @@ import toErrorMap from "../utils/toErrorMap";
 import withApollo from "../utils/withApolloClient";
 import NextLink from "next/link";
 import Layout from "../components/layout";
-import Wrapper from "../components/wrapper";
+// import { ImSpinner9 } from "react-icons/im";
 
 interface LoginProps {}
 
@@ -21,8 +20,7 @@ const Login: React.FC<LoginProps> = ({}) => {
   const router = useRouter();
   return (
     <Layout>
-      <PseudoBox marginTop="5rem"></PseudoBox>
-      <Wrapper custom_width="small">
+      <div className="formContainer">
         <Formik
           initialValues={{ username: "", password: "" }}
           onSubmit={async (values, actions) => {
@@ -59,73 +57,46 @@ const Login: React.FC<LoginProps> = ({}) => {
         >
           {({ isSubmitting }) => {
             return (
-              <>
-                <Wrapper custom_width="small">
-                  <Heading
-                    fontWeight="bold"
-                    fontSize={50}
-                    width="100%"
-                    textAlign="center"
-                    color="black"
-                    marginTop="5rem"
-                  >
-                    Login
-                  </Heading>
-                  <Text
-                    fontSize={30}
-                    color="red.400"
-                    width="100%"
-                    textAlign="center"
-                    marginBottom="2rem"
-                  >
-                    You Know the drill
-                  </Text>
-                </Wrapper>
-                <Form>
+              <div className="formContainer-inner">
+                <div className="header">
+                  <h1>Login</h1>
+                  <p>Well, You Know the drill</p>
+                </div>
+                <Form className="form">
                   <InputField
                     name="username"
                     placeholder="Username"
                     label="Username"
-                    iconName="info"
                   />
                   <InputField
                     name="password"
                     placeholder="Password"
                     label="Password"
                     type="password"
-                    iconName="lock"
                   />
-                  <Flex alignItems="flex-end" justify="space-between">
-                    <Button
-                      mt={4}
-                      bg="red.400"
-                      color="white"
-                      isLoading={isSubmitting}
-                      type="submit"
-                      textAlign="center"
-                      _hover={{ bg: "black", color: "white" }}
-                    >
-                      Login
-                    </Button>
-                    <NextLink href="/forgotPassword">
-                      <Link
-                        border="2px"
-                        borderColor="white"
-                        _hover={{ borderColor: "black" }}
-                        padding="5px"
-                        borderRadius=".5rem"
-                        fontWeight="bold"
-                      >
-                        Forgot password
-                      </Link>
-                    </NextLink>
-                  </Flex>
+                  <div className="formFooter">
+                    <div className="mainBtn">
+                      {isSubmitting ? (
+                        // <button className="spinner">
+                        //   <ImSpinner9 />
+                        // </button>
+                        <button type="submit">Login</button>
+                      ) : (
+                        <button type="submit">Login</button>
+                      )}
+                    </div>
+                    <div className="forgotPass">
+                      <NextLink href="/forgotPassword">
+                        <p>Forgot password</p>
+                      </NextLink>
+                    </div>
+                  </div>
                 </Form>
-              </>
+              </div>
             );
           }}
         </Formik>
-      </Wrapper>
+      </div>
     </Layout>
   );
 };

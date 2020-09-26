@@ -1,37 +1,21 @@
-import { Button, Heading, Text, theme } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
 import InputField from "../components/inputField";
 import Layout from "../components/layout";
-import Wrapper from "../components/wrapper";
 import { MeDocument, MeQuery, useRegisterMutation } from "../generated/graphql";
 import toErrorMap from "../utils/toErrorMap";
 import { checker } from "../utils/validationChecker";
 import { validationErrorMessages } from "../utils/validationErrorCodes";
 import withApollo from "../utils/withApolloClient";
+// import { ImSpinner9 } from "react-icons/im";
 
 const Register: React.FC = ({}) => {
   const [registerMutation] = useRegisterMutation();
   const router = useRouter();
   return (
     <Layout>
-      <Wrapper custom_width="small">
-        <Wrapper custom_width="small">
-          <Heading
-            fontWeight="bold"
-            fontSize={50}
-            width="100%"
-            textAlign="center"
-            color={theme.colors.black}
-            marginTop="5rem"
-          >
-            Coterie
-          </Heading>
-          <Text fontSize={30} color="red.400" width="100%" textAlign="center">
-            Join a fun community of developers
-          </Text>
-        </Wrapper>
+      <div className="formContainer">
         <Formik
           initialValues={{ username: "", password: "", email: "" }}
           onSubmit={async (values, actions) => {
@@ -79,20 +63,22 @@ const Register: React.FC = ({}) => {
           }}
         >
           {({ isSubmitting }) => (
-            <>
+            <div className="formContainer-inner">
+              <div className="header">
+                <h1>Register</h1>
+                <p>Join a fun community of developers</p>
+              </div>
               <Form>
                 <InputField
                   name="email"
                   placeholder="Email"
                   label="Email"
                   type="email"
-                  iconName="email"
                 />
                 <InputField
                   name="username"
                   placeholder="Username"
                   label="Username"
-                  iconName="info"
                   tooltip="
                   1) Must be between 8-20 characters long
                   2) Cannot begin or end with '.' or '_'
@@ -105,29 +91,26 @@ const Register: React.FC = ({}) => {
                   placeholder="Password"
                   label="Password"
                   type="password"
-                  iconName="lock"
                   tooltip="
                   1) Must be atleat 8 characters long
                   2) Must contain atleat one digit, one special character and one uppercase letter
                 "
                 />
-                <Button
-                  mt={4}
-                  bg="red.400"
-                  color={theme.colors.white}
-                  isLoading={isSubmitting}
-                  type="submit"
-                  textAlign="center"
-                  _hover={{ bg: "black", color: "white" }}
-                  float="right"
-                >
-                  Register
-                </Button>
+                <div className="mainBtn">
+                  {isSubmitting ? (
+                    // <button className="spinner">
+                    //   <ImSpinner9 />
+                    // </button>
+                    <button type="submit">Register</button>
+                  ) : (
+                    <button type="submit">Register</button>
+                  )}
+                </div>
               </Form>
-            </>
+            </div>
           )}
         </Formik>
-      </Wrapper>
+      </div>
     </Layout>
   );
 };

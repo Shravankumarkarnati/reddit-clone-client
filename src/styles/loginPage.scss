@@ -1,0 +1,81 @@
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+
+    &-inner {
+        height: 100%;
+        width: 100%;
+        margin-top: 10rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        & .header {
+            text-align: center;
+            margin-bottom: 2rem;
+
+            h1 {
+                font-size: 5rem;
+                font-weight: 800;
+            }
+
+            p {
+                margin-top: 1rem;
+                font-size: 2rem;
+                color: #FA006C;
+                text-transform: capitalize;
+            }
+        }
+    }
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.formFooter {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & .forgotPass {
+        font-size: 1.2rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+@keyframes spinning {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+.spinner {
+    padding: 0 2rem;
+
+    & svg {
+        fill: white;
+        animation: spinning infinite linear;
+    }
+}

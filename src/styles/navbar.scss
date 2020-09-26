@@ -1,0 +1,82 @@
+.layout {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+
+
+.navbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    padding-top: 2rem;
+    border-bottom: 2px solid black;
+    background-color: white;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+
+    .logo {
+        padding: 0 1rem;
+        font-size: 2.4rem;
+        letter-spacing: -.3rem;
+        font-weight: 900;
+        cursor: pointer;
+
+        & h1 {
+            &:hover {
+                text-shadow: 0px 2px 5px rgba(black, .7);
+            }
+        }
+    }
+
+    .btnContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        & .mainBtn {
+            &:not(:last-child) {
+                margin-right: 1rem;
+            }
+        }
+    }
+
+}
+
+.mainBtn {
+
+    & a {
+        text-decoration: none;
+    }
+
+    & button {
+        font-size: 1.6rem;
+        padding: .5rem 1rem;
+        border-radius: .5rem;
+        color: white;
+        opacity: .8;
+        font-weight: 600;
+        transition: all .2s;
+        cursor: pointer;
+        text-transform: capitalize;
+
+        &,
+        &:hover,
+        &:active,
+        &:focus {
+            border: 2px solid black;
+            outline: none;
+            background-color: #007FFE;
+            background-color: #FA006C;
+        }
+
+        &:hover {
+            opacity: 1;
+            box-shadow: 0px 2px 1rem black;
+        }
+
+    }
+}

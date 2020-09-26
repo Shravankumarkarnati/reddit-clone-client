@@ -1,0 +1,72 @@
+.inputContainer {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    & label {
+        font-size: 1.6rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+    }
+
+    margin-bottom: 2rem;
+
+    & .inputGroup {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: flex-start;
+
+        border: 2px solid black;
+        border-radius: .5rem;
+        padding: 1rem;
+
+        transition: all .2s;
+
+        &:focus-within {
+            border-color: #FA006C;
+        }
+
+        & .icon {
+            width: 2.5rem;
+            height: 2.5rem;
+
+            & svg {
+                height: 100%;
+                width: 100%;
+                fill: grey;
+            }
+        }
+
+        & .input {
+            font-size: 2.4rem;
+            background-color: white !important;
+            font-family: inherit;
+            padding: .25rem 2rem;
+            color: #FA006C;
+            color: black;
+
+            &:placeholder-shown {
+                text-transform: lowercase;
+            }
+
+            &:hover,
+            &:focus,
+            &:active,
+            & {
+                border: 0;
+                outline: none;
+            }
+        }
+    }
+
+    & .errorMsg {
+        font-size: 1.5rem;
+        color: red;
+        margin-top: .5rem;
+    }
+}

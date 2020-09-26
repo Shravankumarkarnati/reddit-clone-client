@@ -1,9 +1,7 @@
-import { Button, Flex, Stack, Text } from "@chakra-ui/core";
 import React from "react";
 import { usePostsQuery } from "../generated/graphql";
-import Feature from "./feature";
-import Wrapper from "./wrapper";
 import moment from "moment";
+import Post from "./post";
 
 interface postsContainerProps {}
 
@@ -24,49 +22,50 @@ const PostsContainer: React.FC<postsContainerProps> = () => {
   };
 
   return (
-    <Wrapper custom_width="medium">
-      {data?.posts ? (
-        <>
-          <Stack spacing={8} marginTop={4}>
-            {data.posts.map((cur) => {
-              return (
-                <Feature
-                  key={cur.id}
-                  title={cur.title}
-                  desc={cur.postSnippet}
-                  createdAt={cur.created_at}
-                  points={cur.points}
-                  username={cur.postOwnerUsername}
-                />
-              );
-            })}
-          </Stack>
-          <Flex alignItems="center" justifyContent="center" width="100%">
-            <Button
-              variant="solid"
-              marginTop={10}
-              bg="blue.500"
-              color="white"
-              onClick={() => {
-                loadMore(data.posts[data.posts.length - 1].created_at);
-              }}
-            >
-              Load More
-            </Button>
-          </Flex>
-        </>
-      ) : loading ? (
-        <Text>Loading....</Text>
-      ) : null}
-    </Wrapper>
+    <div className="postsContainer">
+      <div className="postsContainer-inner">
+        {data?.posts ? (
+          <>
+            <div className="postsContainer-body">
+              {data.posts.posts.map((cur) => {
+                return (
+                  <Post
+                    key={cur.id}
+                    title={cur.title}
+                    desc={cur.postSnippet}
+                    createdAt={cur.created_at}
+                    points={cur.points}
+                    username={cur.postOwnerUsername}
+                  />
+                );
+              })}
+            </div>
+            <div className="postsContainer-footer">
+              {data.posts.hasMore ? (
+                <div className="mainBtn">
+                  <button
+                    //   variant="solid"
+                    //   marginTop={10}
+                    //   bg="blue.500"
+                    //   color="white"
+                    //   isLoading={loading}
+                    onClick={() => {
+                      loadMore(
+                        data.posts.posts[data.posts.posts.length - 1].created_at
+                      );
+                    }}
+                  >
+                    Load More
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          </>
+        ) : loading ? (
+          <p className="loading">Loading....</p>
+        ) : null}
+      </div>
+    </div>
   );
 };
 export default PostsContainer;
-
-// updateQuery: (prev, { fetchMoreResult }) => {
-//   // console.log(fetchMoreResult);
-//   if (!fetchMoreResult) return prev;
-//   return Object.assign({}, prev, {
-//     posts: [...prev.posts, ...fetchMoreResult.posts],
-//   });
-// },

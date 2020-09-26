@@ -1,5 +1,11 @@
+import { Post } from "./../generated/graphql";
 import { withApollo as withApolloLib } from "next-apollo";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
+
+class PaginatedPosts {
+  posts: Post[];
+  hasMore: Boolean;
+}
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
@@ -8,8 +14,15 @@ const client = new ApolloClient({
       Query: {
         fields: {
           posts: {
-            merge(existing: any[], incoming: any[]) {
-              const merged = existing ? [...existing, ...incoming] : incoming;
+            merge(existing: PaginatedPosts, incoming: PaginatedPosts) {
+              let merged: PaginatedPosts = {
+                posts: [],
+                hasMore: false,
+              };
+              merged.posts = existing
+                ? [...existing.posts, ...incoming.posts]
+                : incoming.posts;
+              merged.hasMore = incoming.hasMore;
               return merged;
             },
 
