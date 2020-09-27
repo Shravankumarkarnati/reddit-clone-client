@@ -39,7 +39,11 @@ const InputField: React.FC<inputFieldProps> = ({
           )}
         </div>
         {textArea ? (
-          <textarea placeholder={props.placeholder} className="textarea" />
+          <textarea
+            placeholder={props.placeholder}
+            {...field}
+            className="textarea"
+          />
         ) : (
           <input className="input" {...props} {...field} />
         )}

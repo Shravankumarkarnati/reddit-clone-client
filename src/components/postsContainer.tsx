@@ -20,7 +20,6 @@ const PostsContainer: React.FC<postsContainerProps> = () => {
       variables: { cursor: format, limit: 10 },
     });
   };
-
   return (
     <div className="postsContainer">
       <div className="postsContainer-inner">
