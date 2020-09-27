@@ -1,9 +1,7 @@
-import { Flex, Button } from "@chakra-ui/core";
 import { Formik, Form } from "formik";
 import { NextPage } from "next";
 import React from "react";
 import InputField from "../../components/inputField";
-import Wrapper from "../../components/wrapper";
 import withApollo from "../../utils/withApolloClient";
 import { useResetPasswordMutation } from "../../generated/graphql";
 import { checker } from "../../utils/validationChecker";
@@ -15,7 +13,7 @@ const ResetPassword: NextPage<{ uuid: string }> = ({ uuid }) => {
   const [resetPasswordMutation] = useResetPasswordMutation();
   const router = useRouter();
   return (
-    <Wrapper>
+    <div className="formContainer">
       <Formik
         initialValues={{ email: "", password: "", confirmPassword: "" }}
         onSubmit={async (values, actions) => {
@@ -49,39 +47,47 @@ const ResetPassword: NextPage<{ uuid: string }> = ({ uuid }) => {
         }}
       >
         {({ isSubmitting }) => (
-          <Form>
-            <InputField
-              name="email"
-              placeholder="Email"
-              label="Email"
-              type="email"
-            />
-            <InputField
-              name="password"
-              placeholder="Password"
-              label="Password"
-              type="password"
-            />
-            <InputField
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              label="Confirm Password"
-              type="password"
-            />
-            <Flex alignItems="flex-end" justify="space-between">
-              <Button
-                mt={4}
-                variantColor="teal"
-                isLoading={isSubmitting}
-                type="submit"
-              >
-                Reset Password
-              </Button>
-            </Flex>
-          </Form>
+          <div className="formContainer-inner">
+            <div className="header">
+              <h1>Reset Password</h1>
+              <p>Don't lose you password again!! 👀</p>
+            </div>
+            <Form>
+              <InputField
+                name="email"
+                placeholder="Email"
+                label="Email"
+                type="email"
+              />
+              <InputField
+                name="password"
+                placeholder="Password"
+                label="Password"
+                type="password"
+              />
+              <InputField
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                label="Confirm Password"
+                type="password"
+              />
+              <div className="formFooter">
+                <div className="mainBtn">
+                  {isSubmitting ? (
+                    // <button className="spinner">
+                    //   <ImSpinner9 />
+                    // </button>
+                    <button type="submit">Send Reset Link</button>
+                  ) : (
+                    <button type="submit">Send Reset Link</button>
+                  )}
+                </div>
+              </div>
+            </Form>
+          </div>
         )}
       </Formik>
-    </Wrapper>
+    </div>
   );
 };
 

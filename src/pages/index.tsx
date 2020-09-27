@@ -4,9 +4,11 @@ import withApollo from "../utils/withApolloClient";
 
 const Index = () => {
   return (
-    <Layout>
-      <PostsContainer />
-    </Layout>
+    <>
+      <Layout>
+        <PostsContainer />
+      </Layout>
+    </>
   );
 };
 

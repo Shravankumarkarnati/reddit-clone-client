@@ -36,6 +36,7 @@ const PostsContainer: React.FC<postsContainerProps> = () => {
                     createdAt={cur.created_at}
                     points={cur.points}
                     username={cur.postOwnerUsername}
+                    id={cur.id}
                   />
                 );
               })}
@@ -44,11 +45,6 @@ const PostsContainer: React.FC<postsContainerProps> = () => {
               {data.posts.hasMore ? (
                 <div className="mainBtn">
                   <button
-                    //   variant="solid"
-                    //   marginTop={10}
-                    //   bg="blue.500"
-                    //   color="white"
-                    //   isLoading={loading}
                     onClick={() => {
                       loadMore(
                         data.posts.posts[data.posts.posts.length - 1].created_at

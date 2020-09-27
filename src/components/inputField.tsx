@@ -30,7 +30,7 @@ const InputField: React.FC<inputFieldProps> = ({
             <FaUserAlt />
           ) : props.name === "email" ? (
             <MdEmail />
-          ) : props.name === "password" ? (
+          ) : props.name === "password" || props.name === "confirmPassword" ? (
             <BsLockFill />
           ) : props.name === "title" ? (
             <MdTitle />
