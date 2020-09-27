@@ -1,0 +1,12 @@
+fragment postFrag on Post {
+  postOwnerId
+  post
+  points
+  id
+  voteStatus
+  title
+  created_at
+  updated_at
+  postOwnerUsername
+  postSnippet
+}

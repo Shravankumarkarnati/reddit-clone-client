@@ -36,6 +36,7 @@ const PostsContainer: React.FC<postsContainerProps> = () => {
                     points={cur.points}
                     username={cur.postOwnerUsername}
                     id={cur.id}
+                    voteStatus={cur.voteStatus}
                   />
                 );
               })}

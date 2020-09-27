@@ -40,7 +40,6 @@
                 font-size: 2rem;
                 margin: 0 1rem;
                 color: #FA006C;
-                // background: rgba(black, .7);
                 padding: .5rem 1rem;
                 border-radius: .5rem;
 
@@ -57,6 +56,12 @@
                     cursor: pointer;
 
                     &:hover {
+                        fill: #FA006C;
+                    }
+                }
+
+                &.active {
+                    svg {
                         fill: #FA006C;
                     }
                 }

@@ -53,11 +53,13 @@ export type Post = {
   title: Scalars['String'];
   post: Scalars['String'];
   postOwnerId: Scalars['Float'];
+  postOwner: User;
   points: Scalars['Float'];
   created_at: Scalars['String'];
   updated_at: Scalars['String'];
   postSnippet: Scalars['String'];
   postOwnerUsername: Scalars['String'];
+  voteStatus: Scalars['Float'];
 };
 
 export type Mutation = {
@@ -150,7 +152,13 @@ export type VoteResult = {
   __typename?: 'voteResult';
   success: Scalars['Boolean'];
   currentPoints: Scalars['Float'];
+  currentStatus: Scalars['Float'];
 };
+
+export type PostFragFragment = (
+  { __typename?: 'Post' }
+  & Pick<Post, 'postOwnerId' | 'post' | 'points' | 'id' | 'voteStatus' | 'title' | 'created_at' | 'updated_at' | 'postOwnerUsername' | 'postSnippet'>
+);
 
 export type MeUserFragment = (
   { __typename?: 'User' }
@@ -261,7 +269,7 @@ export type VotePostMutation = (
   { __typename?: 'Mutation' }
   & { votePost: (
     { __typename?: 'voteResult' }
-    & Pick<VoteResult, 'success' | 'currentPoints'>
+    & Pick<VoteResult, 'success' | 'currentPoints' | 'currentStatus'>
   ) }
 );
 
@@ -289,11 +297,25 @@ export type PostsQuery = (
     & Pick<PaginatedPosts, 'hasMore'>
     & { posts: Array<(
       { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'title' | 'created_at' | 'updated_at' | 'postOwnerId' | 'postSnippet' | 'postOwnerUsername' | 'points'>
+      & PostFragFragment
     )> }
   ) }
 );
 
+export const PostFragFragmentDoc = gql`
+    fragment postFrag on Post {
+  postOwnerId
+  post
+  points
+  id
+  voteStatus
+  title
+  created_at
+  updated_at
+  postOwnerUsername
+  postSnippet
+}
+    `;
 export const MeUserFragmentDoc = gql`
     fragment MeUser on User {
   id
@@ -525,6 +547,7 @@ export const VotePostDocument = gql`
   votePost(value: $value, postId: $postId) {
     success
     currentPoints
+    currentStatus
   }
 }
     `;
@@ -590,19 +613,12 @@ export const PostsDocument = gql`
     query Posts($limit: Float!, $cursor: String) {
   posts(limit: $limit, cursor: $cursor) {
     posts {
-      id
-      title
-      created_at
-      updated_at
-      postOwnerId
-      postSnippet
-      postOwnerUsername
-      points
+      ...postFrag
     }
     hasMore
   }
 }
-    `;
+    ${PostFragFragmentDoc}`;
 
 /**
  * __usePostsQuery__

@@ -10,6 +10,7 @@ interface featureProps {
   points: Number;
   username: string;
   id: number;
+  voteStatus: number;
 }
 
 const Post: React.FC<featureProps> = ({
@@ -19,9 +20,13 @@ const Post: React.FC<featureProps> = ({
   points,
   username,
   id,
+  voteStatus,
 }) => {
   const [votePostMutation] = useVotePostMutation();
-  const [votes, setVotes] = useState(points);
+  const [votes, setVotes] = useState({
+    points,
+    voteStatus,
+  });
   const voting = async (value: number) => {
     const { data, errors } = await votePostMutation({
       variables: {
@@ -33,10 +38,12 @@ const Post: React.FC<featureProps> = ({
       return;
     }
     if (data?.votePost.success) {
-      setVotes(data.votePost.currentPoints);
+      setVotes({
+        points: data.votePost.currentPoints,
+        voteStatus: data.votePost.currentStatus,
+      });
     }
   };
-
   return (
     <div className="post">
       <div className="post-header">
@@ -48,14 +55,20 @@ const Post: React.FC<featureProps> = ({
       </div>
       <div className="post-footer">
         <div className="points">
-          <div className="svg" onClick={() => voting(1)}>
-            <GoArrowUp className="upvote" />
+          <div
+            className={votes.voteStatus === -1 ? "svg active" : "svg"}
+            onClick={() => voting(-1)}
+          >
+            <GoArrowUp className="downvote" />
           </div>
           <div className="text">
-            <p>{votes}</p>
+            <p>{votes.points}</p>
           </div>
-          <div className="svg" onClick={() => voting(-1)}>
-            <GoArrowUp className="downvote" />
+          <div
+            className={votes.voteStatus === +1 ? "svg active" : "svg"}
+            onClick={() => voting(1)}
+          >
+            <GoArrowUp className="upvote" />
           </div>
         </div>
         <div className="datetime">
