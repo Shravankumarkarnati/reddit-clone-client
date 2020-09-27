@@ -3,6 +3,8 @@ import React from "react";
 import { BsLockFill } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import { MdTitle } from "react-icons/md";
+import { IoIosInformationCircle } from "react-icons/io";
 
 type inputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   name: string;
@@ -28,12 +30,16 @@ const InputField: React.FC<inputFieldProps> = ({
             <FaUserAlt />
           ) : props.name === "email" ? (
             <MdEmail />
-          ) : (
+          ) : props.name === "password" ? (
             <BsLockFill />
+          ) : props.name === "title" ? (
+            <MdTitle />
+          ) : (
+            <IoIosInformationCircle />
           )}
         </div>
         {textArea ? (
-          <textarea className="input" />
+          <textarea placeholder={props.placeholder} className="textarea" />
         ) : (
           <input className="input" {...props} {...field} />
         )}

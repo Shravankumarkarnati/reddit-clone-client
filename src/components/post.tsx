@@ -1,5 +1,5 @@
 import React from "react";
-import { BiUpArrow } from "react-icons/bi";
+import { GoArrowUp } from "react-icons/go";
 import dateFormat from "../utils/postDateFormat";
 
 interface featureProps {
@@ -29,13 +29,13 @@ const Post: React.FC<featureProps> = ({
       <div className="post-footer">
         <div className="points">
           <div className="svg">
-            <BiUpArrow className="upvote" />
+            <GoArrowUp className="upvote" />
           </div>
           <div className="text">
             <p>{points}</p>
           </div>
           <div className="svg">
-            <BiUpArrow className="downvote" />
+            <GoArrowUp className="downvote" />
           </div>
         </div>
         <div className="datetime">
