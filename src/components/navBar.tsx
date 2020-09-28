@@ -13,27 +13,29 @@ const Logout = () => {
   const [logoutMutation] = useLogoutUserMutation();
 
   return (
-    <div className="mainBtn">
-      <button
-        onClick={async () => {
-          await logoutMutation({
-            update: (cache, { data }) => {
-              if (!data?.logoutUser.valueOf) {
-                return;
-              } else {
-                cache.writeQuery<MeQuery>({
-                  query: MeDocument,
-                  data: {
-                    me: null,
-                  },
-                });
-              }
-            },
-          });
-        }}
-      >
-        Logout
-      </button>
+    <div className="btnContainer">
+      <div className="mainBtn">
+        <button
+          onClick={async () => {
+            await logoutMutation({
+              update: (cache, { data }) => {
+                if (!data?.logoutUser.valueOf) {
+                  return;
+                } else {
+                  cache.writeQuery<MeQuery>({
+                    query: MeDocument,
+                    data: {
+                      me: null,
+                    },
+                  });
+                }
+              },
+            });
+          }}
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

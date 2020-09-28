@@ -1,6 +1,7 @@
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { GoArrowUp } from "react-icons/go";
-import { useVotePostMutation } from "../generated/graphql";
+import { useMeQuery, useVotePostMutation } from "../generated/graphql";
 import dateFormat from "../utils/postDateFormat";
 
 interface featureProps {
@@ -27,7 +28,15 @@ const Post: React.FC<featureProps> = ({
     points,
     voteStatus,
   });
+
+  const router = useRouter();
+  const meQuery = useMeQuery();
+
   const voting = async (value: number) => {
+    if (meQuery.data?.me === null) {
+      router.replace(`/login?next=${router.pathname}`);
+      return;
+    }
     const { data, errors } = await votePostMutation({
       variables: {
         value,
@@ -44,8 +53,12 @@ const Post: React.FC<featureProps> = ({
       });
     }
   };
+
   return (
-    <div className="post">
+    <div
+      className="post"
+      onClick={() => router.push(`/post/${encodeURIComponent(id)}`)}
+    >
       <div className="post-header">
         <p className="post-header--title">{title}</p>
         <p className="post-header--username">{username}</p>

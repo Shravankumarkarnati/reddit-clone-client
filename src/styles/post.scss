@@ -10,6 +10,10 @@
 
     border-bottom: 2px solid rgba($color: #000000, $alpha: .5);
 
+    &:hover {
+        background-color: rgba(black, .1);
+    }
+
     &-header,
     &-body,
     &-footer {
@@ -23,6 +27,10 @@
 
         &--username {
             color: #FA006C;
+
+            & a {
+                text-decoration: none;
+            }
         }
 
         &--title {

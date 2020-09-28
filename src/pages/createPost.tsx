@@ -37,14 +37,6 @@ const CreatePost: React.FC<createPostProps> = ({}) => {
               update: (cache) => {
                 cache.reset();
               },
-              // refetchQueries: () => {
-              //   return [
-              //     {
-              //       query: PostsDocument,
-              //       variables: { limit: 10 },
-              //     },
-              //   ];
-              // },
             });
 
             if (response.data) {
