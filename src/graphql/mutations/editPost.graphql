@@ -1,0 +1,9 @@
+mutation EditPost($postId: Int!, $editedPost: String, $editedTitle: String) {
+  editPost(
+    postId: $postId
+    editedTitle: $editedTitle
+    editedPost: $editedPost
+  ) {
+    ...postFrag
+  }
+}

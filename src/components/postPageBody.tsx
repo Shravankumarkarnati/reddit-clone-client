@@ -1,8 +1,16 @@
+import { Formik, Form } from "formik";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { GoArrowUp } from "react-icons/go";
-import { useMeQuery, useVotePostMutation } from "../generated/graphql";
+import {
+  Post,
+  useDeletePostMutation,
+  useEditPostMutation,
+  useMeQuery,
+  useVotePostMutation,
+} from "../generated/graphql";
 import dateFormat from "../utils/postDateFormat";
+import InputField from "./inputField";
 import Layout from "./layout";
 
 interface postPageBodyProps {
@@ -29,6 +37,10 @@ const PostPageBody: React.FC<postPageBodyProps> = ({
   const meQuery = useMeQuery();
   const router = useRouter();
   const [votePostMutation] = useVotePostMutation();
+  const [deletePostMutation] = useDeletePostMutation();
+  const [editPostMutation] = useEditPostMutation();
+  const [edit, setEdit] = useState(false);
+
   const [votes, setVotes] = useState({
     points,
     voteStatus,
@@ -54,12 +66,48 @@ const PostPageBody: React.FC<postPageBodyProps> = ({
       });
     }
   };
+
+  const editPost = () => {
+    setEdit(!edit);
+  };
+  const deletePost = async () => {
+    const response = await deletePostMutation({
+      variables: {
+        postId,
+      },
+      update: (cache, { data }) => {
+        if (data?.deletePost) {
+          cache.modify({
+            fields: {
+              posts(existingPosts, { readField }) {
+                const newArrayPosts = existingPosts.posts.filter(
+                  (curPost: Post) => postId !== readField("id", curPost)
+                );
+                const newObject = {
+                  posts: newArrayPosts,
+                  hasMore: existingPosts.hasMore,
+                };
+                return newObject;
+              },
+            },
+          });
+        } else {
+          return;
+        }
+      },
+    });
+    if (response.data?.deletePost) {
+      router.push("/");
+      return;
+    }
+  };
+
   return (
     <Layout>
+      <div className="mainBtn backBtn">
+        <button onClick={() => router.push("/")}>Back</button>
+      </div>
       <div className="postPageContainer">
-        <div className="mainBtn">
-          <button onClick={() => router.push("/")}>Back</button>
-        </div>
         <div className="container">
           <div className="header">
             <h1>{title}</h1>
@@ -73,7 +121,7 @@ const PostPageBody: React.FC<postPageBodyProps> = ({
               <p>
                 {dateFormat(created_at!)}
                 <span className="edited">
-                  ({created_at !== updated_at ? "edited" : ""})
+                  {created_at !== updated_at ? "(edited)" : ""}
                 </span>
               </p>
             </div>
@@ -94,9 +142,82 @@ const PostPageBody: React.FC<postPageBodyProps> = ({
                 <GoArrowUp className="upvote" />
               </div>
             </div>
+            <div className="options">
+              {meQuery.data?.me?.username === postOwnerUsername ? (
+                <div className="btnContainer">
+                  {!edit ? (
+                    <div className="mainBtn">
+                      <button onClick={editPost}>Edit</button>
+                    </div>
+                  ) : null}
+                  <div className="mainBtn">
+                    <button onClick={deletePost}>Delete</button>
+                  </div>
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
       </div>
+      {edit ? (
+        <div className="editForm">
+          <Formik
+            initialValues={{ newtitle: "", newpost: "" }}
+            onSubmit={async (values) => {
+              const editedValues = {
+                postId,
+                editedPost: values.newpost === "" ? post : values.newpost,
+                editedTitle: values.newtitle === "" ? title : values.newtitle,
+              };
+              const response = await editPostMutation({
+                variables: {
+                  ...editedValues,
+                },
+                update: (cache) => {
+                  cache.reset();
+                },
+              });
+
+              if (response.data) {
+                router.reload();
+              }
+            }}
+          >
+            {({ isSubmitting }) => (
+              <div className="formContainer-inner">
+                <div className="header">
+                  <h1>Edit Post</h1>
+                </div>
+                <Form className="form">
+                  <InputField
+                    name="newtitle"
+                    placeholder="Title"
+                    label="Title"
+                  />
+                  <InputField
+                    name="newpost"
+                    placeholder="Post goes here"
+                    label="Post"
+                    textArea={true}
+                  />
+                  <div className="formFooter">
+                    <div className="mainBtn">
+                      {isSubmitting ? (
+                        // <button className="spinner">
+                        //   <ImSpinner9 />
+                        // </button>
+                        <button type="submit">Edit Post</button>
+                      ) : (
+                        <button type="submit">Edit Post</button>
+                      )}
+                    </div>
+                  </div>
+                </Form>
+              </div>
+            )}
+          </Formik>
+        </div>
+      ) : null}
     </Layout>
   );
 };

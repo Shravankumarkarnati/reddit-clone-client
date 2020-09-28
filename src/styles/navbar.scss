@@ -31,19 +31,18 @@
             }
         }
     }
+}
 
-    .btnContainer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+.btnContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        & .mainBtn {
-            &:not(:last-child) {
-                margin-right: 1rem;
-            }
+    & .mainBtn {
+        &:not(:last-child) {
+            margin-right: 1rem;
         }
     }
-
 }
 
 .mainBtn {

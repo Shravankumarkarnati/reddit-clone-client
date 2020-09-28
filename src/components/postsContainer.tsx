@@ -27,7 +27,7 @@ const PostsContainer: React.FC<postsContainerProps> = () => {
           <>
             <div className="postsContainer-body">
               {data.posts.posts.map((cur) => {
-                return (
+                return !cur.id ? null : (
                   <Post
                     key={cur.id}
                     title={cur.title}

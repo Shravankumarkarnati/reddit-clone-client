@@ -22,7 +22,7 @@ const CreatePost: React.FC<createPostProps> = ({}) => {
           initialValues={{ title: "", post: "" }}
           onSubmit={async (values, actions) => {
             const { setErrors } = actions;
-            if (values.post === "" && values.post === "") {
+            if (values.post === "") {
               setErrors({
                 post: "Post cannot be empty",
               });

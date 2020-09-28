@@ -81,6 +81,22 @@
                     }
                 }
             }
+
+            & .options {
+                width: 100%;
+
+                & .btnContainer {
+                    justify-content: flex-end;
+                }
+            }
         }
     }
+}
+
+.backBtn {
+    margin: 2rem 5rem;
+}
+
+.formFooter {
+    margin-bottom: 5rem;
 }
