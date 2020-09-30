@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 .formContainer {
     display: flex;
     flex-direction: column;
@@ -27,7 +29,7 @@
             p {
                 margin-top: 1rem;
                 font-size: 2rem;
-                color: #FA006C;
+                color: $primary;
                 text-transform: capitalize;
             }
         }
@@ -75,7 +77,7 @@
     padding: 0 2rem;
 
     & svg {
-        fill: white;
+        fill: $white;
         animation: spinning infinite linear;
     }
 }

@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 .inputContainer {
     width: 100%;
 
@@ -21,14 +23,21 @@
         align-items: center;
         justify-content: flex-start;
 
-        border: 2px solid black;
+        border: .3rem solid $black;
         border-radius: .5rem;
         padding: 1rem;
 
         transition: all .2s;
 
         &:focus-within {
-            border-color: #FA006C;
+            border-color: $primary;
+
+            & .icon {
+
+                & svg {
+                    fill: $black;
+                }
+            }
         }
 
         & .icon {
@@ -38,18 +47,19 @@
             & svg {
                 height: 100%;
                 width: 100%;
-                fill: grey;
+                fill: $primary;
+                transition: all .2s;
             }
         }
 
         & .input,
         & .textarea {
             font-size: 2.4rem;
-            background-color: white !important;
+            background-color: $white !important;
             font-family: inherit;
             padding: .25rem 2rem;
-            color: #FA006C;
-            color: black;
+            color: $primary;
+            color: $black;
 
             &:placeholder-shown {
                 text-transform: lowercase;

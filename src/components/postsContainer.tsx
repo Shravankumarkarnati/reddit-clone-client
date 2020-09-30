@@ -45,6 +45,7 @@ const PostsContainer: React.FC<postsContainerProps> = () => {
               {data.posts.hasMore ? (
                 <div className="mainBtn">
                   <button
+                    className="loadMore"
                     onClick={() => {
                       loadMore(
                         data.posts.posts[data.posts.posts.length - 1].created_at

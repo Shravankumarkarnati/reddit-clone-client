@@ -5,6 +5,7 @@
 @import "./styles/postsContainer.scss";
 @import "./styles/post.scss";
 @import "./styles/postPage.scss";
+@import "./styles/variables.scss";
 
 
 * {
@@ -17,4 +18,32 @@
 html {
     font-family: 'Inter', sans-serif;
     font-size: 62.5%;
+
+    @media only screen and (min-width: $screen-fourk) {
+        font-size: 120%;
+    }
+
+    @media only screen and (max-width: $screen-desktop) {
+        font-size: 62.5%;
+    }
+
+    @media only screen and (max-width: $screen-tabletL) {
+        font-size: 60%;
+    }
+
+    @media only screen and (max-width: $screen-tabletP) {
+        font-size: 50%;
+    }
+
+    @media only screen and (max-width: $screen-mobileL) {
+        font-size: 30%;
+    }
+
+    @media only screen and (max-width: $screen-mobileM) {
+        font-size: 25%;
+    }
+
+    @media only screen and (max-width: $screen-mobileS) {
+        font-size: 20%;
+    }
 }

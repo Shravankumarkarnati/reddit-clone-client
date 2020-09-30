@@ -66,7 +66,7 @@ const Register: React.FC = ({}) => {
             <div className="formContainer-inner">
               <div className="header">
                 <h1>Register</h1>
-                <p>Join a fun community of developers</p>
+                <p>Join the community !</p>
               </div>
               <Form>
                 <InputField

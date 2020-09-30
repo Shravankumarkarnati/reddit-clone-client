@@ -9,9 +9,10 @@ import { validationErrorMessages } from "../../utils/validationErrorCodes";
 import toErrorMap from "../../utils/toErrorMap";
 import { useRouter } from "next/router";
 
-const ResetPassword: NextPage<{ uuid: string }> = ({ uuid }) => {
+const ResetPassword: NextPage = () => {
   const [resetPasswordMutation] = useResetPasswordMutation();
   const router = useRouter();
+  const uuid = router.query.uuid as string;
   return (
     <div className="formContainer">
       <Formik
@@ -89,12 +90,6 @@ const ResetPassword: NextPage<{ uuid: string }> = ({ uuid }) => {
       </Formik>
     </div>
   );
-};
-
-ResetPassword.getInitialProps = async ({ query }) => {
-  return {
-    uuid: query.uuid as string,
-  };
 };
 
 export default withApollo({ ssr: false })(ResetPassword);
