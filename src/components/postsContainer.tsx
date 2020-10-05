@@ -12,12 +12,12 @@ const PostsContainer: React.FC<postsContainerProps> = () => {
     },
   });
 
-  const loadMore = async (lastPost: string) => {
-    const format = moment(parseInt(lastPost)).format(
-      "YYYY-MM-DD HH:mm:ss.SSSSSS"
-    );
+  const loadMore = async (epoch: string, id: number) => {
+    // const format = moment(parseInt(epoch)).format(
+    //   "YYYY-MM-DD HH:mm:ss.SSSSSS"
+    // );
     fetchMore({
-      variables: { cursor: format, limit: 10 },
+      variables: { cursor: epoch, limit: 10, id },
     });
   };
   return (
@@ -47,9 +47,8 @@ const PostsContainer: React.FC<postsContainerProps> = () => {
                   <button
                     className="loadMore"
                     onClick={() => {
-                      loadMore(
-                        data.posts.posts[data.posts.posts.length - 1].created_at
-                      );
+                      const last_post = data.posts.posts[0];
+                      loadMore(last_post.created_at, last_post.id);
                     }}
                   >
                     Load More
