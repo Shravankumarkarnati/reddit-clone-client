@@ -6,14 +6,41 @@ import { NextPageContext } from "next";
 class PaginatedPosts {
   posts: Post[];
   hasMore: Boolean;
+  cursor: number;
 }
+const runFun = (
+  existing: PaginatedPosts,
+  incoming: PaginatedPosts,
+  readField: any
+) => {
+  const ePosts = existing.posts;
+  const iPosts = incoming.posts;
+  const rPosts: Post[] = [];
+  const temp: Record<string, number> = {};
+  ePosts.map((cur) => {
+    const id = readField("id", cur);
+    if (!temp[id]) {
+      rPosts.push(cur);
+      temp[id] = 1;
+    }
+  });
+  iPosts.map((cur) => {
+    const id = readField("id", cur);
+    if (!temp[id]) {
+      rPosts.push(cur);
+      temp[id] = 1;
+    }
+  });
+  return rPosts;
+};
 
 const client = (ctx: NextPageContext) =>
   new ApolloClient({
-    uri:
-      process.env.NODE_ENV === "production"
-        ? (process.env.NEXT_PUBLIC_SERVER_URL as string)
-        : "http://localhost:4000/graphql",
+    uri: "http://localhost:4000/graphql",
+
+    // process.env.NODE_ENV === "production"
+    //   ? (process.env.NEXT_PUBLIC_SERVER_URL as string)
+    //   : "http://localhost:4000/graphql",
     headers: {
       cookie:
         (typeof window === "undefined"
@@ -25,19 +52,24 @@ const client = (ctx: NextPageContext) =>
         Query: {
           fields: {
             posts: {
-              merge(existing: PaginatedPosts, incoming: PaginatedPosts) {
+              merge(
+                existing: PaginatedPosts,
+                incoming: PaginatedPosts,
+                { readField }
+              ) {
                 let merged: PaginatedPosts = {
                   posts: [],
                   hasMore: false,
+                  cursor: 0,
                 };
                 merged.posts = existing
-                  ? [...existing.posts, ...incoming.posts]
+                  ? runFun(existing, incoming, readField)
                   : incoming.posts;
                 merged.hasMore = incoming.hasMore;
+                merged.cursor = incoming.cursor;
                 return merged;
               },
-
-              read(existing: any[]) {
+              read(existing: any) {
                 return existing;
               },
             },

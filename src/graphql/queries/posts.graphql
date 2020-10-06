@@ -1,8 +1,9 @@
-query Posts($limit: Float!, $cursor: String, $id: number) {
-  posts(limit: $limit, cursor: $cursor, id: $id) {
+query Posts($limit: Float!, $cursor: String) {
+  posts(limit: $limit, cursor: $cursor) {
     posts {
       ...postFrag
     }
     hasMore
+    cursor
   }
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import { usePostsQuery } from "../generated/graphql";
-import moment from "moment";
 import Post from "./post";
 
 interface postsContainerProps {}
@@ -12,12 +11,9 @@ const PostsContainer: React.FC<postsContainerProps> = () => {
     },
   });
 
-  const loadMore = async (epoch: string, id: number) => {
-    // const format = moment(parseInt(epoch)).format(
-    //   "YYYY-MM-DD HH:mm:ss.SSSSSS"
-    // );
+  const loadMore = async (epoch: number) => {
     fetchMore({
-      variables: { cursor: epoch, limit: 10, id },
+      variables: { cursor: `${epoch}`, limit: 10 },
     });
   };
   return (
@@ -47,8 +43,7 @@ const PostsContainer: React.FC<postsContainerProps> = () => {
                   <button
                     className="loadMore"
                     onClick={() => {
-                      const last_post = data.posts.posts[0];
-                      loadMore(last_post.created_at, last_post.id);
+                      loadMore(data.posts.cursor);
                     }}
                   >
                     Load More

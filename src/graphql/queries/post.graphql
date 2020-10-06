@@ -8,5 +8,6 @@ query Post($id: Int!) {
     created_at
     updated_at
     postOwnerUsername
+    cursor
   }
 }

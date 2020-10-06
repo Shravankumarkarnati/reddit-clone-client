@@ -13,10 +13,10 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  me?: Maybe<User>;
+  hello: Scalars['String'];
   posts: PaginatedPosts;
   post?: Maybe<Post>;
-  hello: Scalars['String'];
+  me?: Maybe<User>;
 };
 
 
@@ -30,21 +30,11 @@ export type QueryPostArgs = {
   id: Scalars['Int'];
 };
 
-export type User = {
-  __typename?: 'User';
-  id: Scalars['Int'];
-  username: Scalars['String'];
-  email: Scalars['String'];
-  posts: Scalars['String'];
-  votes: Scalars['String'];
-  created_at: Scalars['String'];
-  updated_at: Scalars['String'];
-};
-
 export type PaginatedPosts = {
   __typename?: 'PaginatedPosts';
   posts: Array<Post>;
   hasMore: Scalars['Boolean'];
+  cursor: Scalars['Float'];
 };
 
 export type Post = {
@@ -57,45 +47,35 @@ export type Post = {
   points: Scalars['Float'];
   created_at: Scalars['String'];
   updated_at: Scalars['String'];
+  cursor: Scalars['Float'];
   postSnippet: Scalars['String'];
   postOwnerUsername: Scalars['String'];
   voteStatus: Scalars['Float'];
 };
 
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Int'];
+  username: Scalars['String'];
+  email: Scalars['String'];
+  posts: Scalars['String'];
+  votes: Scalars['String'];
+  created_at: Scalars['String'];
+  updated_at: Scalars['String'];
+  cursor: Scalars['Float'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createPost: Post;
+  deletePost?: Maybe<Scalars['Boolean']>;
+  votePost: VoteResult;
+  editPost?: Maybe<Post>;
   registerUser: UserResponse;
   loginUser: UserResponse;
   logoutUser: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   resetPassword: UserResponse;
-  createPost: Post;
-  deletePost?: Maybe<Scalars['Boolean']>;
-  votePost: VoteResult;
-  editPost?: Maybe<Post>;
-};
-
-
-export type MutationRegisterUserArgs = {
-  details: DetailsType;
-};
-
-
-export type MutationLoginUserArgs = {
-  details: LoginUserType;
-};
-
-
-export type MutationForgotPasswordArgs = {
-  email: Scalars['String'];
-};
-
-
-export type MutationResetPasswordArgs = {
-  confirmPassword: Scalars['String'];
-  token: Scalars['String'];
-  password: Scalars['String'];
-  email: Scalars['String'];
 };
 
 
@@ -121,6 +101,41 @@ export type MutationEditPostArgs = {
   postId: Scalars['Int'];
 };
 
+
+export type MutationRegisterUserArgs = {
+  details: DetailsType;
+};
+
+
+export type MutationLoginUserArgs = {
+  details: LoginUserType;
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
+};
+
+
+export type MutationResetPasswordArgs = {
+  confirmPassword: Scalars['String'];
+  token: Scalars['String'];
+  password: Scalars['String'];
+  email: Scalars['String'];
+};
+
+export type PostInputType = {
+  title: Scalars['String'];
+  post: Scalars['String'];
+};
+
+export type VoteResult = {
+  __typename?: 'voteResult';
+  success: Scalars['Boolean'];
+  currentPoints: Scalars['Float'];
+  currentStatus: Scalars['Float'];
+};
+
 export type UserResponse = {
   __typename?: 'UserResponse';
   error?: Maybe<Array<SignError>>;
@@ -142,18 +157,6 @@ export type DetailsType = {
 export type LoginUserType = {
   username: Scalars['String'];
   password: Scalars['String'];
-};
-
-export type PostInputType = {
-  title: Scalars['String'];
-  post: Scalars['String'];
-};
-
-export type VoteResult = {
-  __typename?: 'voteResult';
-  success: Scalars['Boolean'];
-  currentPoints: Scalars['Float'];
-  currentStatus: Scalars['Float'];
 };
 
 export type PostFragFragment = (
@@ -319,7 +322,7 @@ export type PostQuery = (
   { __typename?: 'Query' }
   & { post?: Maybe<(
     { __typename?: 'Post' }
-    & Pick<Post, 'post' | 'points' | 'id' | 'voteStatus' | 'title' | 'created_at' | 'updated_at' | 'postOwnerUsername'>
+    & Pick<Post, 'post' | 'points' | 'id' | 'voteStatus' | 'title' | 'created_at' | 'updated_at' | 'postOwnerUsername' | 'cursor'>
   )> }
 );
 
@@ -333,7 +336,7 @@ export type PostsQuery = (
   { __typename?: 'Query' }
   & { posts: (
     { __typename?: 'PaginatedPosts' }
-    & Pick<PaginatedPosts, 'hasMore'>
+    & Pick<PaginatedPosts, 'hasMore' | 'cursor'>
     & { posts: Array<(
       { __typename?: 'Post' }
       & PostFragFragment
@@ -723,6 +726,7 @@ export const PostDocument = gql`
     created_at
     updated_at
     postOwnerUsername
+    cursor
   }
 }
     `;
@@ -759,6 +763,7 @@ export const PostsDocument = gql`
       ...postFrag
     }
     hasMore
+    cursor
   }
 }
     ${PostFragFragmentDoc}`;
